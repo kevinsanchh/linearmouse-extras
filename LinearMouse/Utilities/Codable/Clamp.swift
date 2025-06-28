@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 protocol ClampRange {
     associatedtype Value: Codable, Comparable
@@ -38,19 +38,15 @@ extension Clamp: Codable {
 extension Clamp: Equatable where T: Equatable {}
 
 extension KeyedDecodingContainer {
-    func decode<T: ClampRange>(
-        _ type: Clamp<T>.Type,
-        forKey key: Self.Key
-    ) throws -> Clamp<T> {
+    func decode<T: ClampRange>(_ type: Clamp<T>.Type,
+                               forKey key: Self.Key) throws -> Clamp<T> {
         try decodeIfPresent(type, forKey: key) ?? Clamp<T>(wrappedValue: nil)
     }
 }
 
 extension KeyedEncodingContainer {
-    mutating func encode<T: ClampRange>(
-        _ value: Clamp<T>,
-        forKey key: Self.Key
-    ) throws {
+    mutating func encode<T: ClampRange>(_ value: Clamp<T>,
+                                        forKey key: Self.Key) throws {
         guard value.wrappedValue != nil else {
             return
         }

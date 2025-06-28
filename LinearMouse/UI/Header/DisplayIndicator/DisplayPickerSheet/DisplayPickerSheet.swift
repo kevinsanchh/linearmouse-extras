@@ -1,11 +1,11 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import SwiftUI
 
 struct DisplayPickerSheet: View {
     @Binding var isPresented: Bool
-    @State private var selectedDisplay = ""
+    @State var selectedDisplay = ""
 
     private let schemeState: SchemeState = .shared
 

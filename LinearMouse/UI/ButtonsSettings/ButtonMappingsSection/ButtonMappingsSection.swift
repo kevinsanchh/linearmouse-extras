@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import SwiftUI
 
@@ -40,11 +40,8 @@ struct ButtonMappingsSection: View {
                 }
                 .buttonStyle(.plain)
                 .sheet(isPresented: $showAddSheet) {
-                    ButtonMappingEditSheet(
-                        isPresented: $showAddSheet,
-                        mapping: $mappingToAdd,
-                        mode: .create
-                    ) { mapping in
+                    ButtonMappingEditSheet(isPresented: $showAddSheet, mapping: $mappingToAdd,
+                                           mode: .create) { mapping in
                         state.appendMapping(mapping)
                     }
                 }
@@ -59,7 +56,7 @@ struct ButtonMappingsSection: View {
                     .frame(width: 16, height: 16)
                 }
                 .buttonStyle(.plain)
-                .disabled(selection.isEmpty)
+                .disabled(selection.count == 0)
             }
         }
         .modifier(SectionViewModifier())

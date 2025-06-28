@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import Combine
 import Foundation
@@ -51,15 +51,13 @@ extension SchemeState {
     }
 
     var currentAppName: String? {
-        guard let currentApp else {
-            return nil
-        }
+        guard let currentApp = currentApp else { return nil }
         return try? readInstalledApp(bundleIdentifier: currentApp)?.bundleName ?? currentApp
     }
 
     var scheme: Scheme {
         get {
-            guard let device else {
+            guard let device = device else {
                 return Scheme()
             }
 
@@ -77,9 +75,7 @@ extension SchemeState {
         }
 
         set {
-            guard let device else {
-                return
-            }
+            guard let device = device else { return }
 
             switch schemes.schemeIndex(ofDevice: device, ofApp: currentApp, ofDisplay: currentDisplay) {
             case let .at(index):
@@ -91,7 +87,7 @@ extension SchemeState {
     }
 
     var mergedScheme: Scheme {
-        guard let device else {
+        guard let device = device else {
             return Scheme()
         }
 

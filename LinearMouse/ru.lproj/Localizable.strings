@@ -29,22 +29,22 @@
 "Scrolling speed" = "Скорость прокрутки";
 "Slow" = "Медленно";
 "Fast" = "Быстро";
-"Distance" = "Расстояние";
+"Distance" = "Количество";
 "Scrolling is disabled based on the current settings." = "Прокрутка отключена на основе текущих настроек.";
-"Revert to system defaults" = "Восстановить настройки по умолчанию";
+"Revert to system defaults" = "Вернуться к настройкам по умолчанию";
 "Copy settings from vertical" = "Скопировать настройки из вертикальной";
-"Modifier Keys" = "Клавиши модификаторы";
+"Modifier Keys" = "Клавиши модификации";
 "Default action" = "Действие по умолчанию";
-"Ignore modifier" = "Игнорировать модификатор";
+"Ignore modifier" = "Игнорировать модификации";
 "No action" = "Не задано";
 "Alter orientation" = "Изменить направление прокрутки";
 "Change speed" = "Изменить скорость";
 "Zoom" = "Масштабирование";
-"Pinch zoom" = "Масштабирование щипком";
+"Pinch zoom" = "Увеличение щипком";
 
 "Disable pointer acceleration" = "Отключить ускорение курсора";
-"Pointer acceleration" = "Ускорение курсора";
-"Pointer speed" = "Скорость курсора";
+"Pointer acceleration" = "Ускорение указателя";
+"Pointer speed" = "Скорость указателя";
 "Tracking speed" = "Скорость перемещения";
 "You may also press ⌃⇧⌘Z to revert to system defaults." = "Вы также можете нажать ⌃⇧⌘Z, чтобы вернуться к настройкам по умолчанию.";
 
@@ -58,8 +58,6 @@
 "Left button" = "Левая кнопка мыши";
 "Right button" = "Правая кнопка мыши";
 "Middle button" = "Средняя кнопка мыши";
-"Back button" = "Кнопка Назад";
-"Forward button" = "Кнопка Вперёд";
 
 "Assign actions to mouse buttons" = "Назначить действия на кнопки мыши";
 "Edit" = "Редактировать";

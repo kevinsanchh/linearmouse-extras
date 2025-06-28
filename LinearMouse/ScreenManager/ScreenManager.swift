@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import AppKit
 import Combine
@@ -25,7 +25,7 @@ class ScreenManager: ObservableObject {
         NotificationCenter.default
             .publisher(for: NSApplication.didChangeScreenParametersNotification)
             .sink { [weak self] _ in
-                guard let self else {
+                guard let self = self else {
                     return
                 }
 
@@ -34,21 +34,20 @@ class ScreenManager: ObservableObject {
             }
             .store(in: &subscriptions)
 
-        ConfigurationState.shared
-            .$configuration
+        ConfigurationState.shared.$configuration
             .debounce(for: 0.1, scheduler: RunLoop.main)
             .sink { [weak self] configuration in
-                guard let self else {
+                guard let self = self else {
                     return
                 }
 
-                self.hasDisplaySpecificSchemes = configuration.schemes.contains(where: \.isDisplaySpecific)
+                self.hasDisplaySpecificSchemes = configuration.schemes.contains { $0.isDisplaySpecific }
                 self.update()
             }
             .store(in: &subscriptions)
 
         DispatchQueue.main.async { [weak self] in
-            guard let self else {
+            guard let self = self else {
                 return
             }
 
@@ -74,7 +73,7 @@ class ScreenManager: ObservableObject {
             )
         }
 
-        if let timer {
+        if let timer = timer {
             timer.invalidate()
             self.timer = nil
         }
@@ -90,7 +89,7 @@ class ScreenManager: ObservableObject {
         }
 
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
-            guard let self else {
+            guard let self = self else {
                 return
             }
 
@@ -107,7 +106,7 @@ extension NSScreen {
     }
 
     var ioServicePort: io_service_t? {
-        guard let displayID else {
+        guard let displayID = displayID else {
             return nil
         }
 

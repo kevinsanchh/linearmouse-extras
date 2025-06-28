@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import AppKit
 import Combine
@@ -16,8 +16,7 @@ class ConfigurationState: ObservableObject {
     var configurationPaths: [URL] {
         var urls: [URL] = []
 
-        if let applicationSupportURL = FileManager.default
-            .urls(for: .applicationSupportDirectory, in: .userDomainMask)
+        if let applicationSupportURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first {
             urls.append(
                 URL(
@@ -50,20 +49,14 @@ class ConfigurationState: ObservableObject {
                 return
             }
 
-            configurationSaveDebounceTimer = Timer.scheduledTimer(
-                withTimeInterval: 0.2,
-                repeats: false
-            ) { [weak self] _ in
-                guard let self else {
+            configurationSaveDebounceTimer = Timer.scheduledTimer(withTimeInterval: 0.2,
+                                                                  repeats: false) { [weak self] _ in
+                guard let self = self else {
                     return
                 }
 
-                os_log(
-                    "Saving new configuration: %{public}@",
-                    log: Self.log,
-                    type: .info,
-                    String(describing: self.configuration)
-                )
+                os_log("Saving new configuration: %{public}@", log: Self.log, type: .info,
+                       String(describing: self.configuration))
                 self.save()
             }
         }
@@ -88,11 +81,8 @@ extension ConfigurationState {
         do {
             configuration = try Configuration.load(from: configurationPath)
         } catch CocoaError.fileReadNoSuchFile {
-            os_log(
-                "No configuration file found, try creating a default one",
-                log: Self.log,
-                type: .info
-            )
+            os_log("No configuration file found, try creating a default one",
+                   log: Self.log, type: .info)
             save()
         } catch {
             let alert = NSAlert()

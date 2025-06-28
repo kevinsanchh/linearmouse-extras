@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import Defaults
 
@@ -17,13 +17,11 @@ struct DeviceMatcher: Codable, Equatable, Hashable, Defaults.Serializable {
 
 extension DeviceMatcher {
     init(of device: Device) {
-        self.init(
-            vendorID: device.vendorID,
-            productID: device.productID,
-            productName: device.productName,
-            serialNumber: device.serialNumber,
-            category: [Category(from: device.category)]
-        )
+        self.init(vendorID: device.vendorID,
+                  productID: device.productID,
+                  productName: device.productName,
+                  serialNumber: device.serialNumber,
+                  category: [Category(from: device.category)])
     }
 
     func match(with device: Device) -> Bool {
@@ -43,7 +41,7 @@ extension DeviceMatcher {
             return false
         }
 
-        if let category {
+        if let category = category {
             guard category.contains(where: { $0.deviceCategory == device.category })
             else {
                 return false

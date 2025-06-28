@@ -58,8 +58,6 @@
 "Left button" = "左鍵";
 "Right button" = "右鍵";
 "Middle button" = "中鍵";
-"Back button" = "返回鍵";
-"Forward button" = "前進鍵";
 
 "Assign actions to mouse buttons" = "分配滑鼠按鈕的動作";
 "Edit" = "編輯";
@@ -168,6 +166,6 @@
 "Configured" = "已配置";
 "Running" = "运行中";
 "Installed" = "已安裝";
-"Other…" = "其他…";
+"Other…" = "Other…";
 
 "All Displays" = "所有顯示器";

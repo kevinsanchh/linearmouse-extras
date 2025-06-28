@@ -40,7 +40,7 @@
 "Alter orientation" = "Cambiar orientación";
 "Change speed" = "Cambiar velocidad";
 "Zoom" = "Zoom";
-"Pinch zoom" = "Pellizcar para acercar";
+"Pinch zoom" = "Pinch zoom";
 
 "Disable pointer acceleration" = "Deshabilitar aceleración del cursor";
 "Pointer acceleration" = "Aceleración del puntero";
@@ -50,7 +50,7 @@
 
 "Enable universal back and forward" = "Habilitar retroceso y avance universal";
 "Convert the back and forward side buttons to swiping gestures to allow universal back and forward functionality." = "Convierte los botones laterales atrás y adelante en gestos de deslizamiento para permitir una funcionalidad universal hacia atrás y hacia delante.";
-"Switch primary and secondary buttons" = "Intercambiar botones primario y secundario";
+"Switch primary and secondary buttons" = "Switch primary and secondary buttons";
 "Debounce button clicks" = "Antirrebote de las pulsaciones de los botones";
 "Ignore rapid clicks within a certain time period." = "Ignorar pulsaciones rápidas dentro de un determinado período de tiempo.";
 "ms" = "ms";
@@ -58,8 +58,6 @@
 "Left button" = "Botón izquierdo";
 "Right button" = "Botón derecho";
 "Middle button" = "Botón central";
-"Back button" = "Botón atrás";
-"Forward button" = "Botón adelante";
 
 "Assign actions to mouse buttons" = "Asignar acciones a los botones del ratón";
 "Edit" = "Editar";
@@ -74,7 +72,7 @@
 "Click to record" = "Clic para grabar";
 "Recording" = "Grabando";
 "Left click" = "Clic izquierdo";
-"Left double-click" = "Doble clic izquierdo";
+"Left double-click" = "Left double-click";
 "Right click" = "Clic derecho";
 "Middle click" = "Clic central";
 "Button #%lld click" = "Clic botón #%lld";
@@ -168,6 +166,6 @@
 "Configured" = "Configurado";
 "Running" = "Ejecutándose";
 "Installed" = "Instalado";
-"Other…" = "Otro…";
+"Other…" = "Other…";
 
-"All Displays" = "Todas las pantallas";
+"All Displays" = "All Displays";

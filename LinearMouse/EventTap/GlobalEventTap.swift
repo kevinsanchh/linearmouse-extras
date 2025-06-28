@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import AppKit
 import Foundation
@@ -16,15 +16,12 @@ class GlobalEventTap {
 
     init() {}
 
-    private func callback(_ event: CGEvent) -> CGEvent? {
+    private func callback(event: CGEvent) -> CGEvent? {
         let mouseEventView = MouseEventView(event)
-        let eventTransformer = EventTransformerManager.shared.get(
-            withCGEvent: event,
-            withSourcePid: mouseEventView.sourcePid,
-            withTargetPid: mouseEventView.targetPid,
-            withMouseLocationPid: mouseEventView.mouseLocationWindowID.ownerPid,
-            withDisplay: ScreenManager.shared.currentScreenName
-        )
+        let eventTransformer = EventTransformerManager.shared.get(withCGEvent: event,
+                                                                  withSourcePid: mouseEventView.sourcePid,
+                                                                  withTargetPid: mouseEventView.targetPid,
+                                                                  withDisplay: ScreenManager.shared.currentScreenName)
         return eventTransformer.transform(event)
     }
 
@@ -43,13 +40,14 @@ class GlobalEventTap {
             return
         }
 
-        var eventTypes: [CGEventType] = EventType.all
-        if SchemeState.shared.schemes.contains(where: { $0.pointer.redirectsToScroll ?? false }) {
-            eventTypes.append(EventType.mouseMoved)
-        }
-
         do {
-            observationToken = try EventTap.observe(eventTypes) { [weak self] in self?.callback($1) }
+            observationToken = try EventTap.observe([.scrollWheel,
+                                                     .leftMouseDown, .leftMouseUp, .leftMouseDragged,
+                                                     .rightMouseDown, .rightMouseUp, .rightMouseDragged,
+                                                     .otherMouseDown, .otherMouseUp, .otherMouseDragged,.mouseMoved,
+                                                     .keyDown, .keyUp, .flagsChanged]) { [weak self] _, event in
+                self?.callback(event: event)
+            }
         } catch {
             NSAlert(error: error).runModal()
         }

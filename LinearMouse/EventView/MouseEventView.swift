@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import AppKit
 import Foundation
@@ -15,7 +15,7 @@ class MouseEventView: EventView {
         }
 
         set {
-            guard let newValue else {
+            guard let newValue = newValue else {
                 return
             }
 
@@ -25,7 +25,7 @@ class MouseEventView: EventView {
     }
 
     var mouseButtonDescription: String {
-        guard let mouseButton else {
+        guard let mouseButton = mouseButton else {
             return "(nil)"
         }
 
@@ -46,12 +46,5 @@ class MouseEventView: EventView {
             return nil
         }
         return pid
-    }
-
-    var mouseLocationWindowID: CGWindowID {
-        CGWindowID(NSWindow.windowNumber(
-            at: NSPointFromCGPoint(event.unflippedLocation),
-            belowWindowWithWindowNumber: 0
-        ))
     }
 }

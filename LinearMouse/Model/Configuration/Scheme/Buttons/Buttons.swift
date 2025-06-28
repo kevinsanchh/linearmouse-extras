@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import Foundation
 
@@ -24,15 +24,15 @@ extension Scheme {
 
 extension Scheme.Buttons {
     func merge(into buttons: inout Self) {
-        if let mappings, !mappings.isEmpty {
+        if let mappings = mappings, mappings.count > 0 {
             buttons.mappings = (buttons.mappings ?? []) + mappings
         }
 
-        if let universalBackForward {
+        if let universalBackForward = universalBackForward {
             buttons.universalBackForward = universalBackForward
         }
 
-        if let switchPrimaryButtonAndSecondaryButtons {
+        if let switchPrimaryButtonAndSecondaryButtons = switchPrimaryButtonAndSecondaryButtons {
             buttons.switchPrimaryButtonAndSecondaryButtons = switchPrimaryButtonAndSecondaryButtons
         }
 

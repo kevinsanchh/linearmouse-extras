@@ -3,7 +3,7 @@
 "Get more help" = "Obtenir plus d'aide";
 "Open Accessibility" = "Ouvrir Accessibilité";
 
-"%@ Settings…" = "Paramètres %@…";
+"%@ Settings…" = "%@ Paramètres…";
 "Start at login" = "Démarrer à l''ouverture de session";
 "Config" = "Configuration";
 "Reload" = "Rafraichir";
@@ -58,8 +58,6 @@
 "Left button" = "Bouton gauche";
 "Right button" = "Bouton droit";
 "Middle button" = "Bouton du milieu";
-"Back button" = "Back button";
-"Forward button" = "Forward button";
 
 "Assign actions to mouse buttons" = "Assigner des actions aux boutons de la souris";
 "Edit" = "Éditer";
@@ -168,6 +166,6 @@
 "Configured" = "Configuré";
 "Running" = "Applications lancées";
 "Installed" = "Installé";
-"Other…" = "Autre…";
+"Other…" = "Other…";
 
 "All Displays" = "Tous les écrans";

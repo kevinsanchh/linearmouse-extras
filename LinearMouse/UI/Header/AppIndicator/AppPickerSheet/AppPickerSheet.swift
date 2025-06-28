@@ -1,11 +1,11 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import SwiftUI
 
 struct AppPickerSheet: View {
     @Binding var isPresented: Bool
-    @State private var selectedApp = ""
+    @State var selectedApp = ""
 
     private let schemeState: SchemeState = .shared
 

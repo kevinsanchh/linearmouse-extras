@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import Combine
 import Foundation
@@ -7,14 +7,54 @@ import PublishedObject
 
 class PointerSettingsState: ObservableObject {
     static let shared: PointerSettingsState = .init()
-
+    
     @PublishedObject private var schemeState = SchemeState.shared
     var scheme: Scheme {
         get { schemeState.scheme }
         set { schemeState.scheme = newValue }
     }
-
+    
     var mergedScheme: Scheme { schemeState.mergedScheme }
+    
+    var customAccelerationEnabled: Bool {
+        get { mergedScheme.pointer.custom.enabled ?? false }
+        set {
+            scheme.pointer.custom.enabled = newValue
+            if newValue {
+                scheme.pointer.disableAcceleration = true
+            }
+            objectWillChange.send()
+        }
+    }
+
+    var customAccelerationAccel: Double {
+        get { (mergedScheme.pointer.custom.accel ?? 0.04).asTruncatedDouble }
+        set { scheme.pointer.custom.accel = Decimal(newValue).rounded(4) }
+    }
+
+    var customAccelerationLimit: Double {
+        get { (mergedScheme.pointer.custom.limit ?? 2).asTruncatedDouble }
+        set { scheme.pointer.custom.limit = Decimal(newValue).rounded(4) }
+    }
+
+    var customAccelerationDecay: Double {
+        get { (mergedScheme.pointer.custom.decay ?? 2).asTruncatedDouble }
+        set { scheme.pointer.custom.decay = Decimal(newValue).rounded(4) }
+    }
+
+    var customAccelerationSensitivity: Double {
+        get { (mergedScheme.pointer.custom.sensitivity ?? 1).asTruncatedDouble }
+        set { scheme.pointer.custom.sensitivity = Decimal(newValue).rounded(4) }
+    }
+
+    var customAccelerationFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.roundingMode = .halfUp
+        formatter.maximumFractionDigits = 4
+        formatter.thousandSeparator = ""
+        return formatter
+    }
 }
 
 extension PointerSettingsState {
@@ -24,17 +64,6 @@ extension PointerSettingsState {
         }
         set {
             scheme.pointer.disableAcceleration = newValue
-        }
-    }
-
-    var pointerRedirectsToScroll: Bool {
-        get {
-            mergedScheme.pointer.redirectsToScroll ?? false
-        }
-        set {
-            scheme.pointer.redirectsToScroll = newValue
-            GlobalEventTap.shared.stop()
-            GlobalEventTap.shared.start()
         }
     }
 
@@ -95,8 +124,7 @@ extension PointerSettingsState {
             pointer: Scheme.Pointer(
                 acceleration: Decimal(device?.pointerAcceleration ?? Device.fallbackPointerAcceleration),
                 speed: Decimal(device?.pointerSpeed ?? Device.fallbackPointerSpeed),
-                disableAcceleration: false,
-                redirectsToScroll: false
+                disableAcceleration: false
             )
         )
         .merge(into: &scheme)

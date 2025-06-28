@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 extension Scheme.Buttons {
     struct Mapping: Codable, Equatable, Hashable {
@@ -43,8 +43,7 @@ extension Scheme.Buttons.Mapping {
                 (control, CGEventFlags.maskControl)
             ]
             .filter { $0.0 == true }
-            .map(\.1)
-            )
+            .map(\.1))
         }
 
         set {
@@ -62,7 +61,7 @@ extension Scheme.Buttons.Mapping {
             return false
         }
 
-        if let button {
+        if let button = button {
             guard [.leftMouseDown, .leftMouseUp, .leftMouseDragged,
                    .rightMouseDown, .rightMouseUp, .rightMouseDragged,
                    .otherMouseDown, .otherMouseUp, .otherMouseDragged].contains(event.type) else {
@@ -75,7 +74,7 @@ extension Scheme.Buttons.Mapping {
             }
         }
 
-        if let scroll {
+        if let scroll = scroll {
             guard event.type == .scrollWheel else {
                 return false
             }

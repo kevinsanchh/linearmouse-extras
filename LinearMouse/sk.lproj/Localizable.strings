@@ -58,8 +58,6 @@
 "Left button" = "Ľavé tlačidlo";
 "Right button" = "Pravé tlačidlo";
 "Middle button" = "Stredné tlačidlo";
-"Back button" = "Tlačidlo Späť";
-"Forward button" = "Tlačidlo Ďalej";
 
 "Assign actions to mouse buttons" = "Priradiť akcie tlačidlám myši";
 "Edit" = "Upraviť";
@@ -168,6 +166,6 @@
 "Configured" = "Nakonfigurované";
 "Running" = "Spustené";
 "Installed" = "Nainštalované";
-"Other…" = "Iné…";
+"Other…" = "Other…";
 
 "All Displays" = "Všetky displeje";

@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import Combine
 import SwiftUI
@@ -12,8 +12,7 @@ class DevicePickerState: ObservableObject {
     @Published var devices: [DeviceModel] = []
 
     init() {
-        DeviceManager.shared
-            .$devices
+        DeviceManager.shared.$devices
             .debounce(for: 0.1, scheduler: RunLoop.main)
             .map {
                 $0

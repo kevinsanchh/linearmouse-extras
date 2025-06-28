@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import SwiftUI
 
@@ -7,10 +7,8 @@ struct HyperLink<Content>: View where Content: View {
     var url: URL
     let content: () -> Content
 
-    init(
-        _ url: URL,
-        @ViewBuilder content: @escaping () -> Content
-    ) {
+    init(_ url: URL,
+         @ViewBuilder content: @escaping () -> Content) {
         self.url = url
         self.content = content
     }
@@ -23,12 +21,12 @@ struct HyperLink<Content>: View where Content: View {
         }
         .foregroundColor(.accentColor)
         .buttonStyle(PlainButtonStyle())
-        .onHover { hovering in
+        .onHover(perform: { hovering in
             if hovering {
                 NSCursor.pointingHand.push()
             } else {
                 NSCursor.pop()
             }
-        }
+        })
     }
 }

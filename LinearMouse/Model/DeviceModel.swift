@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import Combine
 import Foundation
@@ -24,8 +24,7 @@ class DeviceModel: ObservableObject, Identifiable {
         name = deviceRef.value?.name ?? "(removed)"
         category = deviceRef.value?.category ?? .mouse
 
-        DeviceManager.shared
-            .$lastActiveDeviceRef
+        DeviceManager.shared.$lastActiveDeviceRef
             .debounce(for: 0.1, scheduler: RunLoop.main)
             .removeDuplicates()
             .map { deviceRef.value != nil && $0?.value == deviceRef.value }
@@ -36,8 +35,7 @@ class DeviceModel: ObservableObject, Identifiable {
             }
             .store(in: &subscriptions)
 
-        DeviceState.shared
-            .$currentDeviceRef
+        DeviceState.shared.$currentDeviceRef
             .map { deviceRef.value != nil && $0?.value == deviceRef.value }
             .assign(to: \.isSelected, on: self)
             .store(in: &subscriptions)

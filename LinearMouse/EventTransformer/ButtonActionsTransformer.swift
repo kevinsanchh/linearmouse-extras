@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import AppKit
 import DockKit
@@ -50,7 +50,7 @@ extension ButtonActionsTransformer: EventTransformer {
 
     var allEventTypesOfInterest: [CGEventType] {
         [mouseDownEventTypes, mouseUpEventTypes, mouseDraggedEventTypes, scrollWheelsEventTypes, keyTypes]
-            .flatMap(\.self)
+            .flatMap { $0 }
     }
 
     func transform(_ event: CGEvent) -> CGEvent? {
@@ -63,21 +63,13 @@ extension ButtonActionsTransformer: EventTransformer {
         }
 
         if keyTypes.contains(event.type), let newFlags = keySimulator.modifiedCGEventFlags(of: event) {
-            os_log(
-                "Update CGEventFlags from %{public}llu to %{public}llu",
-                log: Self.log,
-                type: .info,
-                event.flags.rawValue,
-                newFlags.rawValue
-            )
+            os_log("Update CGEventFlags from %{public}llu to %{public}llu", log: Self.log, type: .info,
+                   event.flags.rawValue, newFlags.rawValue)
             event.flags = newFlags
         }
 
-        // FIXME: Temporary fix for "repeat on hold"
-        if !mouseDraggedEventTypes.contains(event.type) {
-            repeatTimer?.invalidate()
-            repeatTimer = nil
-        }
+        repeatTimer?.invalidate()
+        repeatTimer = nil
 
         guard let mapping = findMapping(of: event) else {
             return event
@@ -117,13 +109,11 @@ extension ButtonActionsTransformer: EventTransformer {
                 return nil
             }
 
-            queueActions(
-                event: event.copy(),
-                action: action,
-                keyRepeatEnabled: keyRepeatEnabled,
-                keyRepeatDelay: keyRepeatDelay,
-                keyRepeatInterval: keyRepeatInterval
-            )
+            queueActions(event: event.copy(),
+                         action: action,
+                         keyRepeatEnabled: keyRepeatEnabled,
+                         keyRepeatDelay: keyRepeatDelay,
+                         keyRepeatInterval: keyRepeatInterval)
         }
 
         return nil
@@ -133,13 +123,11 @@ extension ButtonActionsTransformer: EventTransformer {
         mappings.last { $0.match(with: event) }
     }
 
-    private func queueActions(
-        event _: CGEvent?,
-        action: Scheme.Buttons.Mapping.Action,
-        keyRepeatEnabled: Bool = false,
-        keyRepeatDelay: TimeInterval = 0,
-        keyRepeatInterval: TimeInterval = 0
-    ) {
+    private func queueActions(event _: CGEvent?,
+                              action: Scheme.Buttons.Mapping.Action,
+                              keyRepeatEnabled: Bool = false,
+                              keyRepeatDelay: TimeInterval = 0,
+                              keyRepeatInterval: TimeInterval = 0) {
         DispatchQueue.main.async { [self] in
             executeIgnoreErrors(action: action)
 
@@ -149,46 +137,40 @@ extension ButtonActionsTransformer: EventTransformer {
 
             repeatTimer = Timer.scheduledTimer(
                 withTimeInterval: keyRepeatDelay,
-                repeats: false
-            ) { [weak self] _ in
-                guard let self else {
-                    return
-                }
-
-                self.executeIgnoreErrors(action: action)
-
-                self.repeatTimer = Timer.scheduledTimer(
-                    withTimeInterval: keyRepeatInterval,
-                    repeats: true
-                ) { [weak self] _ in
-                    guard let self else {
+                repeats: false,
+                block: { [weak self] _ in
+                    guard let self = self else {
                         return
                     }
 
                     self.executeIgnoreErrors(action: action)
+
+                    self.repeatTimer = Timer.scheduledTimer(
+                        withTimeInterval: keyRepeatInterval,
+                        repeats: true,
+                        block: { [weak self] _ in
+                            guard let self = self else {
+                                return
+                            }
+
+                            self.executeIgnoreErrors(action: action)
+                        }
+                    )
                 }
-            }
+            )
         }
     }
 
     private func executeIgnoreErrors(action: Scheme.Buttons.Mapping.Action) {
         do {
-            os_log(
-                "Execute action: %{public}@",
-                log: Self.log,
-                type: .info,
-                String(describing: action)
-            )
+            os_log("Execute action: %{public}@", log: Self.log, type: .info,
+                   String(describing: action))
 
             try execute(action: action)
         } catch {
-            os_log(
-                "Failed to execute: %{public}@: %{public}@",
-                log: Self.log,
-                type: .error,
-                String(describing: action),
-                String(describing: error)
-            )
+            os_log("Failed to execute: %{public}@: %{public}@", log: Self.log, type: .error,
+                   String(describing: action),
+                   String(describing: error))
         }
     }
 
@@ -314,14 +296,8 @@ extension ButtonActionsTransformer: EventTransformer {
     }
 
     private func postScrollEvent(horizontal: Int32, vertical: Int32) {
-        guard let event = CGEvent(
-            scrollWheelEvent2Source: nil,
-            units: .line,
-            wheelCount: 2,
-            wheel1: vertical,
-            wheel2: horizontal,
-            wheel3: 0
-        ) else {
+        guard let event = CGEvent(scrollWheelEvent2Source: nil, units: .line, wheelCount: 2,
+                                  wheel1: vertical, wheel2: horizontal, wheel3: 0) else {
             return
         }
 
@@ -330,14 +306,8 @@ extension ButtonActionsTransformer: EventTransformer {
     }
 
     private func postContinuousScrollEvent(horizontal: Double, vertical: Double) {
-        guard let event = CGEvent(
-            scrollWheelEvent2Source: nil,
-            units: .pixel,
-            wheelCount: 2,
-            wheel1: 0,
-            wheel2: 0,
-            wheel3: 0
-        ) else {
+        guard let event = CGEvent(scrollWheelEvent2Source: nil, units: .pixel, wheelCount: 2,
+                                  wheel1: 0, wheel2: 0, wheel3: 0) else {
             return
         }
 
@@ -354,10 +324,8 @@ extension ButtonActionsTransformer: EventTransformer {
         case up, down, left, right
     }
 
-    private func postScrollEvent(
-        direction: ScrollEventDirection,
-        distance: Scheme.Scrolling.Distance
-    ) {
+    private func postScrollEvent(direction: ScrollEventDirection,
+                                 distance: Scheme.Scrolling.Distance) {
         switch distance {
         case .auto:
             switch direction {
@@ -403,8 +371,7 @@ extension ButtonActionsTransformer: EventTransformer {
 
     private func handleButtonSwaps(event: CGEvent, action: Scheme.Buttons.Mapping.Action) -> Bool {
         guard [mouseDownEventTypes, mouseUpEventTypes, mouseDraggedEventTypes]
-            .flatMap(\.self)
-            .contains(event.type)
+            .flatMap({ $0 }).contains(event.type)
         else {
             return false
         }
@@ -431,20 +398,15 @@ extension ButtonActionsTransformer: EventTransformer {
             return false
         }
 
-        os_log(
-            "Set mouse button to %{public}@",
-            log: Self.log,
-            type: .info,
-            String(describing: mouseEventView.mouseButtonDescription)
-        )
+        os_log("Set mouse button to %{public}@", log: Self.log, type: .info,
+               String(describing: mouseEventView.mouseButtonDescription))
 
         return true
     }
 
     private func handleModifiersHold(event: CGEvent, action: Scheme.Buttons.Mapping.Action) -> Bool {
         guard [mouseDownEventTypes, mouseUpEventTypes]
-            .flatMap(\.self)
-            .contains(event.type)
+            .flatMap({ $0 }).contains(event.type)
         else {
             return false
         }
@@ -458,23 +420,15 @@ extension ButtonActionsTransformer: EventTransformer {
         }
 
         if mouseDownEventTypes.contains(event.type) {
-            os_log(
-                "Down keys: %{public}@",
-                log: Self.log,
-                type: .info,
-                String(describing: keys)
-            )
+            os_log("Down keys: %{public}@", log: Self.log, type: .info,
+                   String(describing: keys))
             try? keySimulator.down(keys: keys, tap: .cgSessionEventTap)
             return true
         }
 
         if mouseUpEventTypes.contains(event.type) {
-            os_log(
-                "Up keys: %{public}@",
-                log: Self.log,
-                type: .info,
-                String(describing: keys)
-            )
+            os_log("Up keys: %{public}@", log: Self.log, type: .info,
+                   String(describing: keys))
             try? keySimulator.up(keys: keys.reversed(), tap: .cgSessionEventTap)
             keySimulator.reset()
             return true
@@ -505,7 +459,7 @@ extension ButtonActionsTransformer: EventTransformer {
             return
         }
 
-        if let clickState {
+        if let clickState = clickState {
             mouseDownEvent.setIntegerValueField(.mouseEventClickState, value: clickState)
             mouseUpEvent.setIntegerValueField(.mouseEventClickState, value: clickState)
         }
@@ -517,7 +471,7 @@ extension ButtonActionsTransformer: EventTransformer {
 
 extension ButtonActionsTransformer: Deactivatable {
     func deactivate() {
-        if let repeatTimer {
+        if let repeatTimer = repeatTimer {
             os_log("ButtonActionsTransformer is inactive, invalidate the repeat timer", log: Self.log, type: .info)
             repeatTimer.invalidate()
             self.repeatTimer = nil

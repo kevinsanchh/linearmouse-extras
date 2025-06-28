@@ -1,5 +1,5 @@
 // MIT License
-// Copyright (c) 2021-2025 LinearMouse
+// Copyright (c) 2021-2024 LinearMouse
 
 import Combine
 import SwiftUI
@@ -13,8 +13,7 @@ struct Settings: View {
                 .padding(5)
                 .frame(minWidth: 200, maxWidth: 200, maxHeight: .infinity, alignment: .top)
                 .background(VisualEffectView(material: .sidebar, blendingMode: .behindWindow)
-                    .edgesIgnoringSafeArea(.top)
-                )
+                    .edgesIgnoringSafeArea(.top))
 
             if let navigation = state.navigation {
                 switch navigation {
